@@ -28,18 +28,18 @@ var connection;
 		database : mysql.azuredb
 	});
 
-	connection.connect(function(err) {
-  		if (err) {
-    		console.error('error connecting: ' + err.stack);
-    		return;
-  		}
-  		console.log('connected as id ' + connection.threadId);
-	});
 
 })()
 
 router.get('/get_env', function(req, res) {
-  res.json(process.env);
+	connection.connect(function(err) {
+  		// if (err) {
+    // 		console.error('error connecting: ' + err.stack);
+    // 		return;
+  		// }
+  		// console.log('connected as id ' + connection.threadId);
+  		res.json({env: process.env, mysql: connection, mysql_err:err});
+	});
 });
 
 module.exports = router;

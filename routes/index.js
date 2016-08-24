@@ -18,14 +18,17 @@ var connection;
 	for(var i = 0, il = s.length; i<il; i++){
 		r = s[i].split('=')
 		key = (r[0]).replace(' ', '_');
+		if(key === 'Data_Source')
+			mysql.port=r[1]
 		mysql[key]=r[1]
 	}
 	console.log(mysql);
 	connection = Mysql.createConnection({
-  		host     : mysql.Data_Source,
-		user     : mysql.User_Id,
-		password : mysql.Password,
-		database : mysql.azuredb
+  		host     : '127.0.0.1',
+  		port 	 : '50663',
+		user     : 'azure',
+		password : 'password',
+		database : 'azuredb'
 	});
 
 

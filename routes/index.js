@@ -38,7 +38,7 @@ router.get('/get_env', function(req, res) {
     // 		return;
   		// }
   		// console.log('connected as id ' + connection.threadId);
-  		res.json({env: process.env, mysql: connection, mysql_err:err});
+  		res.json({env: process.env, mysql_con: connection.threadId, mysql_err:err});
 	});
 });
 

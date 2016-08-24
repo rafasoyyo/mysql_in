@@ -41,7 +41,7 @@ var connection;
 router.get('/get_env', function(req, res) {
 	connection.connect(function(connect_err) {
     	connection.query('SELECT * FROM user;', function(query_err, users, fields){
-	  		res.json({"MYSQLCONNSTR_localdb": process.env.MYSQLCONNSTR_localdb, "env": process.env, "connect_con": connection.threadId, "connect_err":connect_err, "query_err": query_err, "query_con": fields});
+	  		res.json({"MYSQLCONNSTR_localdb": process.env.MYSQLCONNSTR_localdb, "env": process.env, "connect_con": connection.threadId, "connect_err":connect_err, "query_err": query_err, "query_con": users});
 	  	});
 	});
 });

@@ -12,7 +12,7 @@ var connection;
 
 (function(){
 
-	var sql = process.env.MYSQLCONNSTR_localdb; //|| "Database=azuredb;Data Source=127.0.0.1:50663;User Id=azure;Password=password"
+	var sql = process.env.MYSQLCONNSTR_localdb || "Database=azuredb;Data Source=127.0.0.1:50663;User Id=azure;Password=password"
 	var s = sql.split(';')
 	var mysql = {}
 	for(var i = 0, il = s.length; i<il; i++){

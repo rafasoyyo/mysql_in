@@ -12,36 +12,37 @@ var connection;
 
 (function(){
 
-	var sql = "Database=azuredb;Data Source=127.0.0.1:50663;User Id=azure;Password=password"
+	var sql = process.env.MYSQLCONNSTR_localdb; //|| "Database=azuredb;Data Source=127.0.0.1:50663;User Id=azure;Password=password"
 	var s = sql.split(';')
 	var mysql = {}
 	for(var i = 0, il = s.length; i<il; i++){
 		r = s[i].split('=')
 		key = (r[0]).replace(' ', '_');
-		if(key === 'Data_Source')
-			mysql.port=r[1]
-		mysql[key]=r[1]
+		if(key === 'Data_Source'){
+			mysql.Port = (r[1].split(':'))[1];
+			mysql.Host = (r[1].split(':'))[0];
+		}
+		else{
+			mysql[key]=r[1]
+		}
 	}
 	console.log(mysql);
 	connection = Mysql.createConnection({
-  		host     : '127.0.0.1',
-  		port 	 : '50663',
-		user     : 'azure',
-		password : 'password',
-		database : 'azuredb'
+  		host     : mysql.Host,
+  		port 	 : mysql.Port,
+		user     : mysql.User_Id,
+		password : mysql.Password,
+		database : mysql.Database,
 	});
 
 
 })()
 
 router.get('/get_env', function(req, res) {
-	connection.connect(function(err) {
-  		// if (err) {
-    // 		console.error('error connecting: ' + err.stack);
-    // 		return;
-  		// }
-  		// console.log('connected as id ' + connection.threadId);
-  		res.json({env: process.env, mysql_con: connection.threadId, mysql_err:err});
+	connection.connect(function(connect_err) {
+    	connection.query('SELECT * FROM user;', function(query_err, users, fields){
+	  		res.json({"env": process.env, "connect_con": connection.threadId, "connect_err":err, "query_err": query_err, "query_con": fields});
+	  	});
 	});
 });
 
